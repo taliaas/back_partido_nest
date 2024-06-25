@@ -7,6 +7,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { RoleModule } from './role/role.module';
 import { AuthModule } from './auth/auth.module';
+import { ActaRoModule } from './acta-ro/acta-ro.module';
+import { ActaCpModule } from './acta-cp/acta-cp.module';
+import { BalanceModule } from './balance/balance.module';
+import { MiembrosModule } from './miembros/miembros.module';
 
 @Module({
   imports: [
@@ -28,6 +32,10 @@ import { AuthModule } from './auth/auth.module';
     UserModule,
     RoleModule,
     AuthModule,
+    ActaRoModule,
+    ActaCpModule,
+    BalanceModule,
+    MiembrosModule,
   ],
   controllers: [AppController],
   providers: [AppService],
