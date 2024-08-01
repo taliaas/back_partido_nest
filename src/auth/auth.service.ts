@@ -4,7 +4,6 @@ import { Repository } from 'typeorm';
 import { User } from 'src/user/entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
 import * as crypto from 'crypto';
-import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class AuthService {
@@ -14,21 +13,32 @@ export class AuthService {
     private userRepository: Repository<User>,
   ) {}
 
-  private verifyPassword(plainPassword: string, hashedPassword: string): boolean {
-    if (typeof plainPassword !== 'string' || typeof hashedPassword !== 'string') {
+  private verifyPassword(
+    plainPassword: string,
+    hashedPassword: string,
+  ): boolean {
+    if (
+      typeof plainPassword !== 'string' ||
+      typeof hashedPassword !== 'string'
+    ) {
       throw new Error('The values entered must be strings');
     }
     const hash = crypto.createHash('md5').update(plainPassword).digest('hex');
     return hash === hashedPassword;
   }
 
-  async authentication(name: string, password: string): Promise<{ access_token: string; refresh_token: string }> {
+  async authentication(
+    name: string,
+    password: string,
+  ): Promise<{ access_token: string; refresh_token: string }> {
     try {
       const user = await this.userRepository.findOne({ where: { name: name } });
       if (!user) {
         throw new UnauthorizedException('User not found');
       }
-
+      console.log(
+        `Password was received: ${password}, Password was stored: ${user.password}`,
+      );
       const validPassword = this.verifyPassword(password, user.password);
       if (!validPassword) {
         throw new UnauthorizedException('The Password provided is incorrect');
