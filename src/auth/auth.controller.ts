@@ -1,7 +1,9 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+import { UpdateAuthDto } from './dto/auth.dto';
+import { Request } from 'express';
+
 
 @Controller('auth')
 export class AuthController {
@@ -31,4 +33,11 @@ export class AuthController {
   remove(@Param('id') id: string) {
     return this.authService.remove(+id);
   }
+
+  @HttpCode(HttpStatus.ACCEPTED)
+	@Post('authentication')
+	async authentication(@Req() req: Request) {
+		const { name, password } = req.body;
+		return this.authService.authentication(name, password);
+	}
 }
