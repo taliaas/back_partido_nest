@@ -15,7 +15,7 @@ import * as crypto from 'crypto';
 export class UserService {
   constructor(
     @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
+    private userRepository: Repository<User>,
   ) { }
 
   async create(createUserDto: CreateUserDto) {
