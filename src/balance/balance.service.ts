@@ -5,7 +5,7 @@ import { UpdateBalanceDto } from './dto/update-balance.dto';
 @Injectable()
 export class BalanceService {
   create(createBalanceDto: CreateBalanceDto) {
-    return 'This action adds a new balance';
+    return createBalanceDto;
   }
 
   findAll() {
@@ -17,7 +17,7 @@ export class BalanceService {
   }
 
   update(id: number, updateBalanceDto: UpdateBalanceDto) {
-    return `This action updates a #${id} balance`;
+    return updateBalanceDto;
   }
 
   remove(id: number) {

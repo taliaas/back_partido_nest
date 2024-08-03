@@ -1,8 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as crypto from 'crypto';
 
@@ -10,30 +10,33 @@ import * as crypto from 'crypto';
 export class UserService {
   constructor(
     @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
+    private userRepository: Repository<User>,
   ) {}
-  async create(createUserDto: CreateUserDto) {
-    const user = await this.existUser(createUserDto.email);
-    if (user === null) {
-      const encrypted = this.calculateSha256(createUserDto.password);
 
-      const user = this.userRepository.create({
-        ...createUserDto,
-        password: encrypted,
-      });
-      return await this.userRepository.save(user);
-    }
-  }
-  async existUser(email: string) {
-    const user = await this.userRepository.findOne({
-      where: { email },
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    // Verifica si el usuario ya existe
+    const existingUser = await this.userRepository.findOne({
+      where: { email: createUserDto.email },
     });
-    return user;
-  }
-  calculateSha256(password: string): string {
-    const hash = crypto.createHash('sha256');
-    hash.update(password);
-    return hash.digest('hex');
+    if (existingUser) {
+      throw new NotFoundException('El usuario ya existe.');
+    }
+    // Encripta la contraseña usando MD5
+    const hashedPassword = crypto
+      .createHash('md5')
+      .update(createUserDto.password)
+      .digest('hex');
+
+    // Crea el nuevo usuario con la contraseña encriptada
+    const newUser = this.userRepository.create({
+      ...createUserDto,
+      password: hashedPassword,
+    });
+
+    // Guarda el nuevo usuario en la base de datos
+    await this.userRepository.save(newUser);
+
+    return newUser;
   }
 
   async findAll() {
@@ -46,8 +49,8 @@ export class UserService {
     });
   }
 
-  async update(idUser: number, updateUserDto: UpdateUserDto) {
-    const user = await this.findOne(idUser);
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    const user = await this.findOne(id);
     if (!user) {
       throw new NotFoundException();
     }
