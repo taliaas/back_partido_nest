@@ -1,25 +1,34 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity()
+@Entity({ name: 'balance' })
 export class Balance {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('increment')
+  idBal: number;
 
   @Column({ type: 'integer' })
-  nucleo: number;
+  core: number;
 
-  @Column({ type: 'boolean', default: false }) //crecimiento
-  growth: boolean;
+  @Column({ unique: true, type: 'integer' })
+  minutes: number;
 
-  @Column({ type: 'boolean', default: false })
-  cp: boolean;
+  @Column({ nullable: false })
+  order: number;
 
-  @Column({ type: 'integer' })
-  order_of_day: number;
-
-  @Column({ type: 'integer' })
+  @Column({ nullable: false, type: 'integer' })
   participants: number;
 
   @Column({ type: 'integer' })
   agreements: number;
+
+  @Column({ type: 'integer' })
+  crecim: number;
+
+  @Column({ type: 'integer' })
+  cp: number;
+
+  @Column({ type: 'integer' })
+  agreements_cp: number;
+
+  @Column({ type: 'integer' })
+  month: number;
 }
