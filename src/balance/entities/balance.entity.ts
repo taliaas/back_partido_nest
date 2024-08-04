@@ -8,13 +8,13 @@ export class Balance {
   @Column({ type: 'integer' })
   core: number;
 
-  @Column({ unique: true, type: 'integer' })
+  @Column({ type: 'integer' })
   minutes: number;
 
-  @Column({ nullable: false })
+  @Column({ type: 'integer' })
   order: number;
 
-  @Column({ nullable: false, type: 'integer' })
+  @Column({ type: 'integer' })
   participants: number;
 
   @Column({ type: 'integer' })

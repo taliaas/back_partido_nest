@@ -1,15 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import { CreateBalanceDto } from './dto/create-balance.dto';
 import { UpdateBalanceDto } from './dto/update-balance.dto';
+import { Balance } from './entities/balance.entity';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class BalanceService {
-  create(createBalanceDto: CreateBalanceDto) {
-    return createBalanceDto;
+  constructor(
+    @InjectRepository(Balance)
+    private balanceRepository: Repository<Balance>,
+  ) {}
+
+  async create(createBalanceDto: CreateBalanceDto) {
+    const newBalance = this.balanceRepository.create(createBalanceDto);
+    return await this.balanceRepository.save(newBalance);
   }
 
-  findAll() {
-    return `This action returns all balance`;
+  async findAll() {
+    return await this.balanceRepository.find();
   }
 
   findOne(id: number) {
