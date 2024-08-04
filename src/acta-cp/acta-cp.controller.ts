@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ActaCpService } from './acta-cp.service';
 import { CreateActaCpDto } from './dto/create-acta-cp.dto';
 import { UpdateActaCpDto } from './dto/update-acta-cp.dto';

@@ -2,7 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, Timestamp } from 'typeorm';
 
 @Entity()
 export class ActaCP {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('increment')
   id: number;
 
   @Column({ type: 'integer' })
