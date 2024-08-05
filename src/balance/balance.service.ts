@@ -29,7 +29,10 @@ export class BalanceService {
     const word = 'crecimiento';
     return text.includes(word) ? 1 : 0;
   }
-
+  async findIndicador(text: string): Promise<number> {
+    const value = text;
+    return 0;
+  }
   async findAll() {
     return await this.balanceRepository.find();
   }

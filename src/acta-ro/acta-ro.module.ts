@@ -8,5 +8,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   imports: [TypeOrmModule.forFeature([ActaRO])],
   controllers: [ActaRoController],
   providers: [ActaRoService],
+  exports: [ActaRoService],
 })
 export class ActaRoModule {}
