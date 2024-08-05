@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateActaRoDto } from './dto/create-acta-ro.dto';
 import { UpdateActaRoDto } from './dto/update-acta-ro.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -33,7 +33,13 @@ export class ActaRoService {
   }
 
   async update(id: number, updateActaRoDto: UpdateActaRoDto): Promise<void> {
-    await this.actaRORepository.update(id, updateActaRoDto);
+    const acta = await this.findOne(id);
+    if (!acta) {
+      throw new NotFoundException();
+    }
+
+    Object.assign(acta, updateActaRoDto);
+    await this.actaRORepository.save(acta);
   }
 
   async remove(id: number): Promise<void> {

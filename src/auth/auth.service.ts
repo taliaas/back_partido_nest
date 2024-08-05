@@ -28,17 +28,17 @@ export class AuthService {
   }
 
   async authentication(
-    name: string,
+    correo: string,
     password: string,
   ): Promise<{ access_token: string; refresh_token: string }> {
     try {
-      const user = await this.userRepository.findOne({ where: { name: name } });
+      const user = await this.userRepository.findOne({
+        where: { email: correo },
+      });
       if (!user) {
         throw new UnauthorizedException('User not found');
       }
-      console.log(
-        `Password was received: ${password}, Password was stored: ${user.password}`,
-      );
+
       const validPassword = this.verifyPassword(password, user.password);
       if (!validPassword) {
         throw new UnauthorizedException('The Password provided is incorrect');

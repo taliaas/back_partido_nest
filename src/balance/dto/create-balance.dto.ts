@@ -18,4 +18,5 @@ export class CreateBalanceDto {
   agreements_cp: number;
 
   month: number;
+  static crecim: number;
 }
