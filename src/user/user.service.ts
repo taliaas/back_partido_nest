@@ -18,7 +18,10 @@ export class UserService {
     const existingUser = await this.userRepository.findOne({
       where: { email: createUserDto.email },
     });
-    if (existingUser) {
+    const exist = await this.userRepository.findOne({
+      where: { email: createUserDto.email },
+    });
+    if (existingUser || exist) {
       throw new NotFoundException('El usuario ya existe.');
     }
     // Encripta la contraseña usando MD5
