@@ -50,7 +50,7 @@ export class AuthService {
       // Use this.jwtService.sign for signing the tokens
       const accessToken = this.jwtService.sign(payload, { expiresIn: '1h' });
       const refreshToken = this.jwtService.sign(payload, {
-        secret: '',
+        secret: process.env.REFRESH_SECRET,
         expiresIn: '7d',
       });
 
