@@ -5,11 +5,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { join } from 'path';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
-import { RoleModule } from './role/role.module';
 import { AuthModule } from './auth/auth.module';
 import { BalanceModule } from './balance/balance.module';
 import { ActaRoModule } from './acta-ro/acta-ro.module';
 import { ActaCpModule } from './acta-cp/acta-cp.module';
+import { RolesGuard } from './roles/roles.guards';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -29,13 +30,18 @@ import { ActaCpModule } from './acta-cp/acta-cp.module';
       }),
     }),
     UserModule,
-    RoleModule,
     AuthModule,
     BalanceModule,
     ActaRoModule,
     ActaCpModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
 })
 export class AppModule {}
