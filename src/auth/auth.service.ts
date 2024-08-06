@@ -44,7 +44,7 @@ export class AuthService {
 
       const payload = {
         name: user.name,
-        role: user.role,
+        role: user.roles,
       };
 
       // Use this.jwtService.sign for signing the tokens
@@ -62,5 +62,10 @@ export class AuthService {
       console.error(error);
       throw new UnauthorizedException('Authentication failed');
     }
+  }
+
+  async hasRole(username: string, roleName: string): Promise<boolean> {
+    const user = await this.findOneByName(username);
+    return !!user && user.roles.some((role) => role.name === roleName);
   }
 }
