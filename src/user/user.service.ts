@@ -4,7 +4,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import * as crypto from 'crypto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -24,11 +24,13 @@ export class UserService {
     if (existingUser || exist) {
       throw new NotFoundException('El usuario ya existe.');
     }
-    // Encripta la contraseña usando MD5
-    const hashedPassword = crypto
-      .createHash('md5')
-      .update(createUserDto.password)
-      .digest('hex');
+
+    // Suponiendo que createUserDto es un objeto que contiene la propiedad password
+    const saltRounds = 10; // Número de rondas para el hashing, aumentar para mayor seguridad pero menor rendimiento
+    const hashedPassword = await bcrypt.hash(
+      createUserDto.password,
+      saltRounds,
+    );
 
     // Crea el nuevo usuario con la contraseña encriptada
     const newUser = this.userRepository.create({
