@@ -1,26 +1,48 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateActaRoDto } from './dto/create-acta-ro.dto';
 import { UpdateActaRoDto } from './dto/update-acta-ro.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { ActaRO } from './entities/acta-ro.entity';
+import { Repository } from 'typeorm';
+import { validate } from 'class-validator';
 
 @Injectable()
 export class ActaRoService {
-  create(createActaRoDto: CreateActaRoDto) {
-    return 'This action adds a new actaRo';
+  constructor(
+    @InjectRepository(ActaRO)
+    private actaRORepository: Repository<ActaRO>,
+  ) {}
+
+  async create(createActaRoDto: CreateActaRoDto) {
+    const errors = await validate(createActaRoDto);
+    if (errors.length > 0) {
+      throw new Error('Validation failed');
+    }
+    const acta = this.actaRORepository.create(createActaRoDto);
+    return await this.actaRORepository.save(acta);
   }
 
-  findAll() {
-    return `This action returns all actaRo`;
+  async findAll(): Promise<ActaRO[]> {
+    return this.actaRORepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} actaRo`;
+  async findOne(id: number): Promise<ActaRO | undefined> {
+    return this.actaRORepository.findOne({
+      where: { id },
+    });
   }
 
-  update(id: number, updateActaRoDto: UpdateActaRoDto) {
-    return `This action updates a #${id} actaRo`;
+  async update(id: number, updateActaRoDto: UpdateActaRoDto): Promise<void> {
+    const acta = await this.findOne(id);
+    if (!acta) {
+      throw new NotFoundException();
+    }
+
+    Object.assign(acta, updateActaRoDto);
+    await this.actaRORepository.save(acta);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} actaRo`;
+  async remove(id: number): Promise<void> {
+    await this.actaRORepository.delete(id);
   }
 }
