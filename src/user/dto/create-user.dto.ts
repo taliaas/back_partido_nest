@@ -1,3 +1,5 @@
+import { Role } from 'src/role/entities/role.entity';
+
 export class CreateUserDto {
   name: string;
 
@@ -5,5 +7,5 @@ export class CreateUserDto {
 
   password: string;
 
-  role: number;
+  role: Role[];
 }
