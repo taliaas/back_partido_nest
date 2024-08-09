@@ -23,12 +23,18 @@ export class ActaRO {
   @Column({ type: 'date' })
   day: Date;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ type: 'varchar' })
   order: string;
+
+  @Column({ type: 'varchar' })
+  members: string;
 
   @Column({ type: 'varchar' })
   development: string;
 
   @Column({ type: 'varchar' })
   agreements: string;
+
+  @Column({ type: 'boolean' })
+  cp: boolean;
 }

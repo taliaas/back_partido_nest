@@ -15,9 +15,13 @@ export class CreateActaRoDto {
 
   day: Date;
 
+  members: string;
+
   order: string;
 
   development: string;
 
   agreements: string;
+
+  cp: boolean;
 }
