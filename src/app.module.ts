@@ -1,16 +1,14 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { join } from 'path';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { BalanceModule } from './balance/balance.module';
 import { ActaRoModule } from './acta-ro/acta-ro.module';
 import { ActaCpModule } from './acta-cp/acta-cp.module';
-import { RolesGuard } from './roles/roles.guards';
-import { APP_GUARD } from '@nestjs/core';
+import { AppService } from './app.service';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -29,19 +27,13 @@ import { APP_GUARD } from '@nestjs/core';
         synchronize: true,
       }),
     }),
-    UserModule,
     AuthModule,
     BalanceModule,
+    UserModule,
     ActaRoModule,
     ActaCpModule,
   ],
   controllers: [AppController],
-  providers: [
-    AppService,
-    {
-      provide: APP_GUARD,
-      useClass: RolesGuard,
-    },
-  ],
+  providers: [AppService],
 })
 export class AppModule {}

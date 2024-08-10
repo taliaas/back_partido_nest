@@ -1,12 +1,12 @@
-import { Role } from 'src/role/entities/role.entity';
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Role } from 'src/common/enums/rol.enum';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('rowid')
   id: number;
 
-  @Column({ type: 'varchar', length: 12, unique: true, nullable: true })
+  @Column({ type: 'varchar', unique: true, nullable: true })
   name: string;
 
   @Column({ unique: true, nullable: false })
@@ -15,6 +15,6 @@ export class User {
   @Column({ type: 'varchar', nullable: true })
   password: string;
 
-  @ManyToMany(() => Role, (role) => role.name)
-  roles: Role[];
+  @Column({ type: 'enum', default: Role.USER, enum: Role })
+  role: Role;
 }

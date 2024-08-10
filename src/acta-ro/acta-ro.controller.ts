@@ -10,12 +10,15 @@ import {
 import { ActaRoService } from './acta-ro.service';
 import { CreateActaRoDto } from './dto/create-acta-ro.dto';
 import { UpdateActaRoDto } from './dto/update-acta-ro.dto';
+import { Role } from 'src/common/enums/rol.enum';
+import { Roles } from 'src/auth/decorators/roles.decorators';
 
 @Controller('acta-ro')
 export class ActaRoController {
   constructor(private readonly actaRoService: ActaRoService) {}
 
   @Post()
+  @Roles(Role.ADMIN)
   create(@Body() createActaRoDto: CreateActaRoDto) {
     return this.actaRoService.create(createActaRoDto);
   }
