@@ -10,6 +10,8 @@ import { AuthModule } from './auth/auth.module';
 import { BalanceModule } from './balance/balance.module';
 import { ActaRoModule } from './acta-ro/acta-ro.module';
 import { ActaCpModule } from './acta-cp/acta-cp.module';
+import { CalendarModule } from './calendar/calendar.module';
+import { MeetingsModule } from './meetings/meetings.module';
 
 @Module({
   imports: [
@@ -34,6 +36,8 @@ import { ActaCpModule } from './acta-cp/acta-cp.module';
     BalanceModule,
     ActaRoModule,
     ActaCpModule,
+    CalendarModule,
+    MeetingsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

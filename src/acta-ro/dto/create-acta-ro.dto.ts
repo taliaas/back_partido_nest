@@ -23,5 +23,5 @@ export class CreateActaRoDto {
 
   agreements: string;
 
-  cp: boolean;
+  cp: number;
 }
