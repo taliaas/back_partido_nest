@@ -1,9 +1,15 @@
 import { Role } from 'src/role/entities/role.entity';
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn('rowid')
+  @PrimaryGeneratedColumn('increment')
   id: number;
 
   @Column({ type: 'varchar', length: 12, unique: true, nullable: true })
@@ -15,6 +21,7 @@ export class User {
   @Column({ type: 'varchar', nullable: true })
   password: string;
 
-  @ManyToMany(() => Role, (role) => role.name)
-  roles: Role[];
+  @ManyToOne(() => Role, (role) => role.id)
+  @JoinColumn({ name: 'role' })
+  role: Role;
 }

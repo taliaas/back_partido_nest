@@ -1,14 +1,17 @@
+import { IsInt } from 'class-validator';
 import { Timestamp } from 'typeorm';
 
 export class CreateActaRoDto {
-  id: number;
-
+  @IsInt()
   nucleo: number;
 
+  @IsInt()
   area: number;
 
+  @IsInt()
   missing: number;
 
+  @IsInt()
   present: number;
 
   hour: Timestamp;
@@ -23,5 +26,6 @@ export class CreateActaRoDto {
 
   agreements: string;
 
+  @IsInt()
   cp: number;
 }

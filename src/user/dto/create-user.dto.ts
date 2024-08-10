@@ -1,11 +1,11 @@
-import { Role } from 'src/role/entities/role.entity';
-
+import { IsNotEmpty } from 'class-validator';
 export class CreateUserDto {
+  @IsNotEmpty()
   name: string;
 
+  @IsNotEmpty()
   email: string;
 
+  @IsNotEmpty()
   password: string;
-
-  role: Role[];
 }

@@ -10,6 +10,7 @@ import {
 import { BalanceService } from './balance.service';
 import { CreateBalanceDto } from './dto/create-balance.dto';
 import { UpdateBalanceDto } from './dto/update-balance.dto';
+import { Public } from 'src/common/RutaPublic';
 
 @Controller('balance')
 export class BalanceController {
@@ -20,11 +21,13 @@ export class BalanceController {
     return this.balanceService.create(createBalanceDto);
   }
 
+  @Public()
   @Get()
   findAll() {
     return this.balanceService.findAll();
   }
 
+  @Public()
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.balanceService.findOne(+id);
