@@ -22,8 +22,8 @@ import { ActaCpModule } from './acta-cp/acta-cp.module';
         host: configService.get('localhost'),
         port: +configService.get('5432'),
         username: 'postgres',
-        password: 'bdcomision',
-        database: 'project',
+        password: 'citizenfour',
+        database: 'proyectoweb',
         entities: [join(process.cwd(), 'dist/**/*.entity.js')], //Estas 2 líneas de acceso es para decir quien tiene acceso
         synchronize: true,
       }),

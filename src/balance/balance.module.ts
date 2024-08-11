@@ -10,5 +10,6 @@ import { ActaCP } from 'src/acta-cp/entities/acta-cp.entity';
   imports: [TypeOrmModule.forFeature([Balance, ActaRO, ActaCP])],
   controllers: [BalanceController],
   providers: [BalanceService],
+  exports: [BalanceService], 
 })
 export class BalanceModule {}
