@@ -65,13 +65,13 @@ export class BalanceService {
   }
 
   async createBalance(actaRoId: number) {
-    // Fetch the acta from ActaRO using the provided ID
+  
     const actaRo = await this.actaRORepository.findOne({ where: { id: actaRoId } });
     if (!actaRo) {
       throw new Error('Acta RO not found');
     }
   
-   
+    const crecimValue = await this.findCreciment(actaRo.development);
     const actaCp = await this.actaCpRepository.findOne({ where: { idactaro: actaRoId } });
     const date = new Date(actaRo.day);
     const month = date.getMonth() + 1;
@@ -84,11 +84,11 @@ export class BalanceService {
       agreements: (actaRo.agreements.match(/desc/g) || []).length,
       cp: actaCp ? 1 : 0,
       agreements_cp: actaCp ? (actaCp.agreements.match(/desc/g) || []).length : 0,
-      month: month , // tomar bien
-      crecim: 1, //preguntar que poner
+      month: month ,
+      crecim: crecimValue,
     });
   
-    // Save the balance record in the database
+    
     await this.balanceRepository.save(balance);
   }
 }  
