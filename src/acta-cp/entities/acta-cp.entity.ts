@@ -27,5 +27,5 @@ export class ActaCP {
   agreements: string;
 
   @Column({ type: 'integer' })
-  idactaro: number;
+  idRO: number;
 }

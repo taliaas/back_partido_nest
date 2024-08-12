@@ -5,14 +5,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ActaRO } from './entities/acta-ro.entity';
 import { Repository } from 'typeorm';
 import { validate } from 'class-validator';
-import { BalanceService } from 'src/balance/balance.service';  // Asegúrate de importar BalanceService
+import { BalanceService } from 'src/balance/balance.service';
 
 @Injectable()
 export class ActaRoService {
   constructor(
     @InjectRepository(ActaRO)
     private actaRORepository: Repository<ActaRO>,
-    private balanceService: BalanceService,  // Inyección de BalanceService
+    private balanceService: BalanceService,
   ) {}
 
   async create(createActaRoDto: CreateActaRoDto) {
@@ -23,9 +23,7 @@ export class ActaRoService {
     const acta = this.actaRORepository.create(createActaRoDto);
     const savedActa = await this.actaRORepository.save(acta);
 
-    // Llama a createBalance después de guardar ActaRO
     await this.balanceService.createBalance(savedActa.id);
-
     return savedActa;
   }
 

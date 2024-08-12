@@ -1,8 +1,6 @@
 import { Timestamp } from 'typeorm';
 
 export class CreateActaCpDto {
-  id: number;
-
   missing: number;
 
   present: number;
@@ -17,5 +15,5 @@ export class CreateActaCpDto {
 
   agreements: string;
 
-  idatacro: number;
+  idRO: number;
 }
