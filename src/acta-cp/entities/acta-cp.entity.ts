@@ -28,5 +28,4 @@ export class ActaCP {
 
   @Column({ type: 'integer' })
   idactaro: number;
-
 }
