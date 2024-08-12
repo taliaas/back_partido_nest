@@ -10,6 +10,8 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { Role } from 'src/common/enums/rol.enum';
+import { Roles } from 'src/auth/decorators/roles.decorators';
 
 @Controller('user')
 export class UserController {
@@ -21,6 +23,7 @@ export class UserController {
   }
 
   @Get()
+  @Roles(Role.ADMIN)
   findAll() {
     return this.userService.findAll();
   }
