@@ -16,4 +16,6 @@ export class CreateActaCpDto {
   development: string;
 
   agreements: string;
+
+  idatacro: number;
 }

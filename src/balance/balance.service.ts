@@ -5,6 +5,7 @@ import { Balance } from './entities/balance.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ActaRO } from 'src/acta-ro/entities/acta-ro.entity';
+import { ActaCP } from 'src/acta-cp/entities/acta-cp.entity';
 
 @Injectable()
 export class BalanceService {
@@ -13,6 +14,8 @@ export class BalanceService {
     private balanceRepository: Repository<Balance>,
     @InjectRepository(ActaRO)
     private actaRORepository: Repository<ActaRO>,
+    @InjectRepository(ActaCP)
+    private actaCpRepository: Repository<ActaCP>,
   ) {}
 
   async create(createBalanceDto: CreateBalanceDto) {
@@ -60,4 +63,32 @@ export class BalanceService {
     }
     return await this.balanceRepository.remove(bal);
   }
-}
+
+  async createBalance(actaRoId: number) {
+  
+    const actaRo = await this.actaRORepository.findOne({ where: { id: actaRoId } });
+    if (!actaRo) {
+      throw new Error('Acta RO not found');
+    }
+  
+    const crecimValue = await this.findCreciment(actaRo.development);
+    const actaCp = await this.actaCpRepository.findOne({ where: { idactaro: actaRoId } });
+    const date = new Date(actaRo.day);
+    const month = date.getMonth() + 1;
+  
+    const balance = this.balanceRepository.create({
+      core: actaRo.nucleo,
+      minutes: actaRo.id,
+      order: (actaRo.order.match(/desc/g) || []).length,
+      participants: actaRo.present,
+      agreements: (actaRo.agreements.match(/desc/g) || []).length,
+      cp: actaCp ? 1 : 0,
+      agreements_cp: actaCp ? (actaCp.agreements.match(/desc/g) || []).length : 0,
+      month: month ,
+      crecim: crecimValue,
+    });
+  
+    
+    await this.balanceRepository.save(balance);
+  }
+}  

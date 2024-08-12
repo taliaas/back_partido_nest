@@ -25,4 +25,8 @@ export class ActaCP {
 
   @Column({ type: 'varchar' })
   agreements: string;
+
+  @Column({ type: 'integer' })
+  idactaro: number;
+
 }
