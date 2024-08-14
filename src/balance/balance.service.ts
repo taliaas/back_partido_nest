@@ -50,7 +50,7 @@ export class BalanceService {
     return await this.balanceRepository.remove(bal);
   }
 
-  async createBalance(actaRoId: number) {
+  async create(actaRoId: number) {
     const actaRo = await this.actaRORepository.findOne({
       where: { id: actaRoId },
     });

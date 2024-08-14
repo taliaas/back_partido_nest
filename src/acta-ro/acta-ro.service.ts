@@ -23,7 +23,7 @@ export class ActaRoService {
     const acta = this.actaRORepository.create(createActaRoDto);
     const savedActa = await this.actaRORepository.save(acta);
 
-    await this.balanceService.createBalance(savedActa.id);
+    await this.balanceService.create(savedActa.id);
     return savedActa;
   }
 
