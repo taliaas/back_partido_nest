@@ -12,6 +12,12 @@ export class User {
   @Column({ unique: true, nullable: false })
   email: string;
 
+  @Column({ type: 'integer' })
+  nucleo: number;
+
+  @Column({ type: 'integer' })
+  area: number;
+
   @Column({ type: 'varchar', nullable: true })
   password: string;
 

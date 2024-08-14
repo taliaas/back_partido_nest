@@ -12,6 +12,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Role } from 'src/common/enums/rol.enum';
 import { Roles } from 'src/auth/decorators/roles.decorators';
+import { User } from './entities/user.entity';
 
 @Controller('user')
 export class UserController {
@@ -29,8 +30,13 @@ export class UserController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOneById(@Param('id') id: string) {
     return this.userService.findOne(+id);
+  }
+
+  @Get('/data/:name')
+  find(@Param('name') name: string): Promise<User | undefined> {
+    return this.userService.findOneByName(name);
   }
 
   @Patch(':id')
