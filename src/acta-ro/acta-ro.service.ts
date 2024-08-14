@@ -45,9 +45,15 @@ export class ActaRoService {
 
     Object.assign(acta, updateActaRoDto);
     await this.actaRORepository.save(acta);
+
+    // Actualiza el balance correspondiente
+  await this.balanceService.updateBalanceByActaROId(id);
   }
 
   async remove(id: number): Promise<void> {
+     // Eliminar el balance asociado al acta
+    await this.balanceService.deleteBalanceByActaROId(id);
+    // Eliminar el acta
     await this.actaRORepository.delete(id);
   }
 }

@@ -1,5 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { UpdateBalanceDto } from './dto/update-balance.dto';
+import { Injectable } from '@nestjs/common';
 import { Balance } from './entities/balance.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -32,24 +31,12 @@ export class BalanceService {
     });
   }
 
-  async update(idBal: number, updateBalanceDto: UpdateBalanceDto) {
-    const user = await this.findOne(idBal);
-    if (!user) {
-      throw new NotFoundException();
-    }
-
-    Object.assign(user, updateBalanceDto);
-    return await this.balanceRepository.save(user);
+  //funcion para eliminar el balance
+  async deleteBalanceByActaROId(actaRoId: number): Promise<void> {
+    await this.balanceRepository.delete({ minutes: actaRoId });
   }
 
-  async remove(idBal: number) {
-    const bal = await this.findOne(idBal);
-    if (!bal) {
-      throw new NotFoundException();
-    }
-    return await this.balanceRepository.remove(bal);
-  }
-
+  //funcion para crear el balance
   async create(actaRoId: number) {
     const actaRo = await this.actaRORepository.findOne({
       where: { id: actaRoId },
@@ -78,7 +65,8 @@ export class BalanceService {
       month: month,
       crecim: crecimValue,
     });
-
+  
+    
     await this.balanceRepository.save(balance);
   }
 }
