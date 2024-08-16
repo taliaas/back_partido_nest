@@ -9,9 +9,6 @@ export class ActaRO {
   nucleo: number;
 
   @Column({ type: 'integer' })
-  area: number;
-
-  @Column({ type: 'integer' })
   missing: number;
 
   @Column({ type: 'integer' })

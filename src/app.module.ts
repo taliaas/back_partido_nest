@@ -9,8 +9,6 @@ import { ActaRoModule } from './acta-ro/acta-ro.module';
 import { ActaCpModule } from './acta-cp/acta-cp.module';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
-import { MiembrosModule } from './miembros/miembros.module';
-import { NucleoModule } from './nucleo/nucleo.module';
 
 @Module({
   imports: [
@@ -35,8 +33,6 @@ import { NucleoModule } from './nucleo/nucleo.module';
     ActaRoModule,
     ActaCpModule,
     ActaRoModule,
-    MiembrosModule,
-    NucleoModule,
   ],
   controllers: [AppController],
   providers: [AppService],

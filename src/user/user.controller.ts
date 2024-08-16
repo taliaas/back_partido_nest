@@ -17,7 +17,6 @@ import { User } from './entities/user.entity';
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
-
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
@@ -42,6 +41,23 @@ export class UserController {
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(+id, updateUserDto);
+  }
+  @Patch(':id/change-password')
+  async changePassword(
+    @Param('id') id: number,
+    @Body() updatePasswordDto: { oldPassword: string; newPassword: string },
+  ) {
+    try {
+      const result = await this.userService.updatePassword(
+        id,
+        updatePasswordDto.oldPassword,
+        updatePasswordDto.newPassword,
+      );
+      return result;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   }
 
   @Delete(':id')

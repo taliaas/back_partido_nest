@@ -11,7 +11,7 @@ export class AuthService {
     private jwtService: JwtService,
     @InjectRepository(User)
     private userRepository: Repository<User>,
-  ) { }
+  ) {}
   async verifyPassword(
     plainPassword: string,
     hashedPassword: string,
@@ -41,19 +41,16 @@ export class AuthService {
       if (!validPassword) {
         throw new UnauthorizedException('The Password provided is incorrect');
       }
-
       const payload = {
         name: user.name,
         role: user.role,
       };
-
       // Use this.jwtService.sign for signing the tokens
       const accessToken = this.jwtService.sign(payload, { expiresIn: '1h' });
       const refreshToken = this.jwtService.sign(payload, {
         secret: process.env.REFRESH_SECRET,
         expiresIn: '7d',
       });
-
       return {
         access_token: accessToken,
         refresh_token: refreshToken,

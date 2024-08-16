@@ -67,11 +67,43 @@ export class UserService {
     if (!user) {
       throw new NotFoundException();
     }
-
     Object.assign(user, updateUserDto);
     return await this.userRepository.save(user);
   }
 
+  async updatePassword(
+    id: number,
+    oldPassword: string,
+    newPassword: string,
+  ): Promise<any> {
+    try {
+      // Buscar al usuario por ID
+      const user = await this.findOne(id);
+      if (!user) {
+        throw new Error('Usuario no encontrado');
+      }
+
+      // Comparar la contraseña antigua con la almacenada
+      const isOldPasswordValid = await bcrypt.compare(
+        oldPassword,
+        user.password,
+      );
+
+      if (!isOldPasswordValid) {
+        throw new Error('Contraseña antigua incorrecta');
+      }
+
+      // Hash de la nueva contraseña
+      const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
+      // Actualizar la contraseña del usuario
+      Object.assign(user, hashedNewPassword);
+      return await this.userRepository.save(user);
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
   async remove(idUser: number) {
     const user = await this.findOne(idUser);
     if (!user) {

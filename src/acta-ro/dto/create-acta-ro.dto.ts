@@ -6,9 +6,6 @@ export class CreateActaRoDto {
   nucleo: number;
 
   @IsInt()
-  area: number;
-
-  @IsInt()
   missing: number;
 
   @IsInt()
