@@ -31,4 +31,10 @@ export class NucleoController {
   remove(@Param('id') id: string) {
     return this.nucleoService.remove(+id);
   }
+
+   // Nuevo endpoint para obtener los identificadores de núcleos como una cadena separados por coma. 
+   @Get('/ids-as-string')
+   getNucleoIdsAsString() {
+     return this.nucleoService.getNucleoIdsAsString();
+   }
 }

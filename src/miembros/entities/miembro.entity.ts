@@ -6,5 +6,8 @@ export class Miembro {
   id: number;
 
   @Column()
+  id_nucleo: number;
+
+  @Column()
   name: string;
 }

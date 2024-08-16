@@ -1,11 +1,11 @@
 import { Miembro } from 'src/miembros/entities/miembro.entity';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn,PrimaryColumn } from 'typeorm';
 
 @Entity()
 export class Nucleo {
-  @PrimaryGeneratedColumn('increment')
-  id: number;
+  @PrimaryColumn()
+  id_nucleo: number;
 
-  @Column({})
-  list: Miembro[];
+  @Column("simple-array")
+  list: string[];
 }

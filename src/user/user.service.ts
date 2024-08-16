@@ -5,32 +5,33 @@ import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { NucleoService } from 'src/nucleo/nucleo.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    private nucleoService: NucleoService, 
   ) {}
 
+  //(Nuevo) Esta funcion busca el nombre del usuario en la tabla nucleo, si ese nombre no pertenece a ningun nuclo no se puede agregar a la base de datos. 
   async create(createUserDto: CreateUserDto): Promise<User> {
     // Verifica si el usuario ya existe
     const existingUser = await this.userRepository.findOne({
       where: { email: createUserDto.email },
     });
-    const exist = await this.userRepository.findOne({
-      where: { email: createUserDto.email },
-    });
-    if (existingUser || exist) {
+
+    if (existingUser) {
       throw new NotFoundException('El usuario ya existe.');
     }
 
-    // Suponiendo que createUserDto es un objeto que contiene la propiedad password
-    const saltRounds = 10; // Número de rondas para el hashing, aumentar para mayor seguridad pero menor rendimiento
-    const hashedPassword = await bcrypt.hash(
-      createUserDto.password,
-      saltRounds,
-    );
+    // Verifica si el nombre del usuario está en algún núcleo
+    await this.nucleoService.buscarMiembro(createUserDto.name);
+
+    // Encriptar la contraseña
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(createUserDto.password, saltRounds);
 
     // Crea el nuevo usuario con la contraseña encriptada
     const newUser = this.userRepository.create({
@@ -43,6 +44,7 @@ export class UserService {
 
     return newUser;
   }
+
   async findOneByEmail(email: string) {
     return this.userRepository.findOneBy({ email });
   }
