@@ -9,6 +9,8 @@ export class CreateActaCpDto {
 
   day: Date;
 
+  year: number;
+
   topic: string;
 
   development: string;
@@ -16,4 +18,5 @@ export class CreateActaCpDto {
   agreements: string;
 
   idRO: number;
+
 }

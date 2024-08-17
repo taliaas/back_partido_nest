@@ -17,6 +17,9 @@ export class ActaCP {
   @Column({ type: 'date' })
   day: Date;
 
+  @Column({ type: 'integer' })
+  year: number;
+
   @Column({ type: 'varchar' })
   topic: string;
 

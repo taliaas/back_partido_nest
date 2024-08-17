@@ -13,13 +13,13 @@ export class ActaCpService {
     private actaCPRepository: Repository<ActaCP>,
   ) {}
 
-  async create(createActaCpDto: CreateActaCpDto) {
-    const errors = await validate(createActaCpDto);
-    if (errors.length > 0) {
-      throw new Error('Validation failed');
+  async create(createActaCpDto: CreateActaCpDto): Promise<ActaCP> {
+    try {
+      const actaCp = this.actaCPRepository.create(createActaCpDto);
+      return await this.actaCPRepository.save(actaCp);
+    } catch (error) {
+      throw new Error(`Error al crear el acta CP: ${error.message}`);
     }
-    const acta = this.actaCPRepository.create(createActaCpDto);
-    return await this.actaCPRepository.save(acta);
   }
 
   async findAll(): Promise<ActaCP[]> {
