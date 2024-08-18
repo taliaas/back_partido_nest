@@ -104,6 +104,7 @@ export class UserService {
       throw error;
     }
   }
+
   async remove(idUser: number) {
     const user = await this.findOne(idUser);
     if (!user) {
