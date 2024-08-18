@@ -3,6 +3,7 @@ import { UpdateGraphDto } from './dto/update-graph.dto';
 import { Graph } from './entities/graph.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CreateGraphDto } from './dto/create-graph.dto';
 
 @Injectable()
 export class GraphService {
@@ -10,6 +11,10 @@ export class GraphService {
     @InjectRepository(Graph)
     private graphRepository: Repository<Graph>,
   ) {}
+
+  async create(createGraphDto: CreateGraphDto) {
+    return this.graphRepository.save(createGraphDto);
+  }
 
   async findAll() {
     return await this.graphRepository.find();
@@ -19,6 +24,18 @@ export class GraphService {
     return await this.graphRepository.findOne({
       where: { id },
     });
+  }
+
+  async findByCore(core: number, indicador: string) {
+    const graph = await this.graphRepository.findOne({
+      where: { core, indicador },
+    });
+    // Comprueba si el grafo fue encontrado
+    if (!graph) {
+      console.log('Grafo no encontrado');
+      return undefined; // O maneja este caso como prefieras
+    }
+    return graph.valores;
   }
 
   //hacer despues

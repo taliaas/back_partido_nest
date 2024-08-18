@@ -1,4 +1,4 @@
-import { IsArray, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsNumber } from 'class-validator';
 
 export class CreateGraphDto {
   @IsNumber()
@@ -13,6 +13,5 @@ export class CreateGraphDto {
   @IsNotEmpty()
   indicador: string;
 
-  @IsArray()
   valores: number[];
 }

@@ -9,6 +9,7 @@ import { ActaRoModule } from './acta-ro/acta-ro.module';
 import { ActaCpModule } from './acta-cp/acta-cp.module';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
+import { GraphModule } from './graph/graph.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { UserModule } from './user/user.module';
     ActaRoModule,
     ActaCpModule,
     ActaRoModule,
+    GraphModule,
   ],
   controllers: [AppController],
   providers: [AppService],
