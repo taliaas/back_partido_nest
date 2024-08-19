@@ -1,14 +1,13 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Controller, Get, Param, Post } from '@nestjs/common';
 import { GraphService } from './graph.service';
-import { CreateGraphDto } from './dto/create-graph.dto';
 
 @Controller('graph')
 export class GraphController {
   constructor(private readonly graphService: GraphService) {}
 
   @Post()
-  create(@Body() createGraphDto: CreateGraphDto) {
-    return this.graphService.create(createGraphDto);
+  create(@Param('id') id: number, @Param('indicador') indicador: string) {
+    return this.graphService.create(id, indicador);
   }
 
   @Get()
@@ -25,7 +24,8 @@ export class GraphController {
   async findGraph(
     @Param('core') core: number,
     @Param('indicador') indicador: string,
+    @Param('anno') anno: number,
   ) {
-    return await this.graphService.findByCore(core, indicador);
+    return await this.graphService.findByCore(core, indicador, anno);
   }
 }

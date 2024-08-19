@@ -31,4 +31,7 @@ export class Balance {
 
   @Column({ type: 'integer' })
   month: number;
+
+  @Column({ type: 'integer' })
+  year: number;
 }

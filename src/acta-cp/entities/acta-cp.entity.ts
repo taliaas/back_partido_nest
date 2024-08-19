@@ -23,7 +23,7 @@ export class ActaCP {
   @Column({ type: 'varchar' })
   development: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', array: true })
   agreements: string;
 
   @Column({ type: 'integer' })

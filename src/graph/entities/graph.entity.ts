@@ -14,6 +14,6 @@ export class Graph {
   @Column({ type: 'varchar' })
   indicador: string;
 
-  @Column({ type: 'integer' })
-  valores: number[];
+  @Column({ type: 'integer', array: true })
+  values: number[];
 }

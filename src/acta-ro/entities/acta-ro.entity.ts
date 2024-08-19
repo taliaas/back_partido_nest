@@ -20,16 +20,16 @@ export class ActaRO {
   @Column({ type: 'date' })
   day: Date;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', array: true })
   order: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', array: true })
   members: string;
 
   @Column({ type: 'varchar' })
   development: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', array: true })
   agreements: string;
 
   @Column({ type: 'integer' })

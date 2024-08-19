@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ActaRO } from 'src/acta-ro/entities/acta-ro.entity';
 import { ActaCP } from 'src/acta-cp/entities/acta-cp.entity';
+import { GraphService } from 'src/graph/graph.service';
 
 @Injectable()
 export class BalanceService {
@@ -14,6 +15,7 @@ export class BalanceService {
     private actaRORepository: Repository<ActaRO>,
     @InjectRepository(ActaCP)
     private actaCpRepository: Repository<ActaCP>,
+    private graphService: GraphService,
   ) {}
 
   async findCreciment(text: string): Promise<number> {
@@ -55,17 +57,19 @@ export class BalanceService {
     const balance = this.balanceRepository.create({
       core: actaRo.nucleo,
       minutes: actaRo.id,
-      order: (actaRo.order.match(/desc/g) || []).length,
-      participants: actaRo.present,
-      agreements: (actaRo.agreements.match(/desc/g) || []).length,
+      order: actaRo.order.length,
+      participants: actaRo.members.length,
+      agreements: actaRo.agreements.length,
       cp: actaCp ? 1 : 0,
-      agreements_cp: actaCp
-        ? (actaCp.agreements.match(/desc/g) || []).length
-        : 0,
+      agreements_cp: actaCp ? actaCp.agreements.length : 0,
       month: month,
+      year: date.getFullYear(),
       crecim: crecimValue,
     });
-    await this.balanceRepository.save(balance);
+    const saveBal = await this.balanceRepository.save(balance);
+    await this.graphService.create(saveBal.idBal, 'participant');
+    await this.graphService.create(saveBal.idBal, 'order');
+    await this.graphService.create(saveBal.idBal, 'agree');
   }
 
   async updateBalanceByActaROId(actaRoId: number): Promise<void> {

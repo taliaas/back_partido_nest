@@ -5,12 +5,8 @@ import { ActaRO } from './entities/acta-ro.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BalanceModule } from 'src/balance/balance.module';
 
-
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([ActaRO]),
-    BalanceModule,  // Importa BalanceModule aquí
-  ],
+  imports: [TypeOrmModule.forFeature([ActaRO]), BalanceModule],
   controllers: [ActaRoController],
   providers: [ActaRoService],
   exports: [ActaRoService],
