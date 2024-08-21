@@ -42,4 +42,9 @@ export class ActaRoController {
   remove(@Param('id') id: string) {
     return this.actaRoService.remove(+id);
   }
+
+  @Get('zero') // Define un endpoint para obtener actas con cp igual a 0
+  async findActas(): Promise<any> {
+    return await this.actaRoService.findActas();
+  }
 }

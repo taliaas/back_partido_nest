@@ -37,6 +37,17 @@ export class ActaRoService {
     });
   }
 
+  //buscar acta ro que tenga cp = 0
+  async findActas() {
+    const actaROExists = await this.actaRORepository.findOne({
+      where: { id: 1 },
+    });
+    if (actaROExists) {
+      throw new Error('ActaRO no existe');
+    }
+    return actaROExists;
+  }
+
   async update(id: number, updateActaRoDto: UpdateActaRoDto): Promise<void> {
     const acta = await this.findOne(id);
     if (!acta) {
