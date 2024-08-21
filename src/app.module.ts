@@ -24,7 +24,7 @@ import { NucleoModule } from './nucleo/nucleo.module';
         port: +configService.get('5432'),
         username: 'postgres',
         password: 'bdcomision',
-        database: 'project',
+        database: 'example',
         entities: [join(process.cwd(), 'dist/**/*.entity.js')], //Estas 2 líneas de acceso es para decir quien tiene acceso
         synchronize: true,
       }),

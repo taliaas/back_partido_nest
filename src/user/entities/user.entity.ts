@@ -1,5 +1,6 @@
 import { Role } from 'src/common/enums/rol.enum';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Nucleo } from 'src/nucleo/entities/nucleo.entity';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class User {
@@ -12,8 +13,8 @@ export class User {
   @Column({ unique: true, nullable: false })
   email: string;
 
-  @Column({ type: 'integer' }) //hacer un JOIN
-  nucleo: number;
+  @ManyToOne(() => Nucleo, (nucleo) => nucleo.usuarios)
+  nucleo: Nucleo;
 
   @Column({ type: 'varchar', nullable: true })
   password: string;

@@ -1,10 +1,15 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from 'src/user/entities/user.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Nucleo {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('increment')
   id: number;
 
+  @Column()
+  name: string;
+
   @Column({ type: 'varchar', array: true })
-  integrantes: string[];
+  @OneToMany(() => User, (user) => user.nucleo)
+  usuarios: User[];
 }

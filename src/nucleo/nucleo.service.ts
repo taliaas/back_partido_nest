@@ -1,23 +1,39 @@
 import { Injectable } from '@nestjs/common';
 import { CreateNucleoDto } from './dto/create-nucleo.dto';
 import { UpdateNucleoDto } from './dto/update-nucleo.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Nucleo } from './entities/nucleo.entity';
+import { Repository } from 'typeorm';
+import { validate } from 'class-validator';
 
 @Injectable()
 export class NucleoService {
-  create(createNucleoDto: CreateNucleoDto) {
-    return 'This action adds a new nucleo';
+  constructor(
+    @InjectRepository(Nucleo)
+    private nucleoRepository: Repository<Nucleo>,
+  ) {}
+
+  async create(createNucleoDto: CreateNucleoDto) {
+    const errors = await validate(createNucleoDto);
+    if (errors.length > 0) {
+      throw new Error('Validation failed');
+    }
+    const nucleo = this.nucleoRepository.create(createNucleoDto);
+    return await this.nucleoRepository.save(nucleo);
   }
 
-  findAll() {
-    return `This action returns all nucleo`;
+  async findAll() {
+    return await this.nucleoRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} nucleo`;
+  async findOne(id: number) {
+    return await this.nucleoRepository.findOne({
+      where: { id },
+    });
   }
 
   update(id: number, updateNucleoDto: UpdateNucleoDto) {
-    return `This action updates a #${id} nucleo`;
+    return this.nucleoRepository.save(updateNucleoDto);
   }
 
   remove(id: number) {
