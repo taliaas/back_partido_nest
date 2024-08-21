@@ -4,9 +4,10 @@ import { ActaCpController } from './acta-cp.controller';
 import { ActaCP } from './entities/acta-cp.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ActaRO } from 'src/acta-ro/entities/acta-ro.entity';
+import { ActaRoModule } from 'src/acta-ro/acta-ro.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ActaCP, ActaRO])],
+  imports: [TypeOrmModule.forFeature([ActaCP, ActaRO]), ActaRoModule],
   controllers: [ActaCpController],
   providers: [ActaCpService],
 })

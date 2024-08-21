@@ -50,6 +50,16 @@ export class ActaRoService {
     await this.balanceService.updateBalanceByActaROId(id);
   }
 
+  async updateCpToById(id: number): Promise<void> {
+    const actaRO = await this.findOne(id);
+    if (!actaRO) {
+      throw new Error('ActaCP not found');
+    }
+    actaRO.cp = 1;
+
+    await this.actaRORepository.save(actaRO);
+  }
+
   async remove(id: number): Promise<void> {
     // Eliminar el balance asociado al acta
     await this.balanceService.deleteBalanceByActaROId(id);
