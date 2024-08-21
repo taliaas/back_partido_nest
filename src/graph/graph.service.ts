@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { UpdateGraphDto } from './dto/update-graph.dto';
 import { Graph } from './entities/graph.entity';
 import { Repository } from 'typeorm';
@@ -67,8 +67,14 @@ export class GraphService {
   }
 
   //hacer despues
-  update(id: number, updateGraphDto: UpdateGraphDto) {
-    return `This action updates a #${id}#${updateGraphDto} graph`;
+  async update(id: number, updateGraphDto: UpdateGraphDto) {
+    const graph = await this.findOne(id);
+    if (!graph) {
+      throw new NotFoundException();
+    }
+
+    Object.assign(graph, updateGraphDto);
+    await this.graphRepository.save(graph);
   }
 
   //solo elimina cuando este valores null

@@ -1,5 +1,6 @@
-import { Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { GraphService } from './graph.service';
+import { UpdateGraphDto } from './dto/update-graph.dto';
 
 @Controller('graph')
 export class GraphController {
@@ -20,12 +21,17 @@ export class GraphController {
     return this.graphService.findOne(+id);
   }
 
-  @Get(':core/:indicador')
+  @Get(':core/:indicador/:anno')
   async findGraph(
     @Param('core') core: number,
     @Param('indicador') indicador: string,
     @Param('anno') anno: number,
   ) {
     return await this.graphService.findByCore(core, indicador, anno);
+  }
+
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateGraphDto: UpdateGraphDto) {
+    return this.graphService.update(+id, updateGraphDto);
   }
 }
