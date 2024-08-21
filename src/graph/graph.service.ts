@@ -21,7 +21,6 @@ export class GraphService {
     if (!balance) {
       throw new Error('Balance not found');
     }
-
     let valor = 1;
     if (!valor) {
       throw new Error('Value for "values" column is undefined or null');

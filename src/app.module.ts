@@ -10,6 +10,7 @@ import { ActaCpModule } from './acta-cp/acta-cp.module';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { GraphModule } from './graph/graph.module';
+import { NucleoModule } from './nucleo/nucleo.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { GraphModule } from './graph/graph.module';
     ActaCpModule,
     ActaRoModule,
     GraphModule,
+    NucleoModule,
   ],
   controllers: [AppController],
   providers: [AppService],
