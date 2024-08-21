@@ -5,19 +5,39 @@ import { ActaCP } from './entities/acta-cp.entity';
 import { CreateActaCpDto } from './dto/create-acta-cp.dto';
 import { validate } from 'class-validator';
 import { UpdateActaCpDto } from './dto/update-acta-cp.dto';
+import { ActaRO } from 'src/acta-ro/entities/acta-ro.entity';
 
 @Injectable()
 export class ActaCpService {
   constructor(
     @InjectRepository(ActaCP)
     private actaCPRepository: Repository<ActaCP>,
+    @InjectRepository(ActaRO)
+    private actaRORepository: Repository<ActaRO>,
   ) {}
 
-  async create(createActaCpDto: CreateActaCpDto) {
+  async create(createActaCpDto: CreateActaCpDto): Promise<ActaCP | undefined> {
     const errors = await validate(createActaCpDto);
     if (errors.length > 0) {
       throw new Error('Validation failed');
     }
+
+    // Primero, busca si existe una ActaRO con el idRO dado
+    const actaROExists = await this.actaRORepository.findOne({
+      where: { id: createActaCpDto.idRO },
+    });
+    if (!actaROExists) {
+      throw new Error('ActaRO no existe');
+    }
+
+    // Luego, verifica si no existe un ActaCP con el mismo idRO
+    const actaCPExists = await this.actaCPRepository.findOne({
+      where: { idRO: createActaCpDto.idRO },
+    });
+    if (actaCPExists) {
+      throw new Error('Ya existe un ActaCP con este idRO');
+    }
+
     const acta = this.actaCPRepository.create(createActaCpDto);
     return await this.actaCPRepository.save(acta);
   }
