@@ -15,5 +15,13 @@ export class CreateGraphDto {
 
   @IsNumber()
   @IsArray()
-  values: number[];
+  order: number[];
+
+  @IsNumber()
+  @IsArray()
+  agree: number[];
+
+  @IsNumber()
+  @IsArray()
+  participant: number[];
 }

@@ -1,15 +1,10 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch } from '@nestjs/common';
 import { GraphService } from './graph.service';
 import { UpdateGraphDto } from './dto/update-graph.dto';
 
 @Controller('graph')
 export class GraphController {
   constructor(private readonly graphService: GraphService) {}
-
-  @Post()
-  create(@Param('id') id: number, @Param('indicador') indicador: string) {
-    return this.graphService.create(id, indicador);
-  }
 
   @Get()
   findAll() {

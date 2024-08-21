@@ -11,9 +11,12 @@ export class Graph {
   @Column({ type: 'integer' })
   anno: number;
 
-  @Column({ type: 'varchar' })
-  indicador: string;
+  @Column({ type: 'integer', array: true })
+  order: number[];
 
   @Column({ type: 'integer', array: true })
-  values: number[];
+  agreem: number[];
+
+  @Column({ type: 'integer', array: true })
+  participant: number[];
 }

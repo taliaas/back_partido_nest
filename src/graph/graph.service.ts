@@ -14,31 +14,21 @@ export class GraphService {
     private balanceRepository: Repository<Balance>,
   ) {}
 
-  async create(balanceId: number, indicador: string) {
+  async create(balanceId: number) {
     const balance = await this.balanceRepository.findOne({
       where: { idBal: balanceId },
     });
     if (!balance) {
       throw new Error('Balance not found');
     }
-    let valor = 1;
-    if (!valor) {
-      throw new Error('Value for "values" column is undefined or null');
-    }
-    if (indicador === 'participant') {
-      valor = balance.participants;
-    } else if (indicador === 'order') {
-      valor = balance.order;
-    } else if (indicador === 'agree') {
-      valor = balance.agreements;
-    }
     const index = balance.month;
 
     const graph = this.graphRepository.create({
       anno: balance.year,
       core: balance.core,
-      indicador: indicador,
-      [`values[${index}]`]: valor, //comprobar que no hay nada en esa posicion o sobreescribir??
+      [`order[${index}]`]: balance.order, //comprobar que no hay nada en esa posicion o sobreescribir??
+      [`agree[${index}]`]: balance.agreements,
+      [`participant[${index}]`]: balance.participants,
     });
     await this.graphRepository.save(graph);
   }
@@ -55,14 +45,20 @@ export class GraphService {
 
   async findByCore(core: number, indicador: string, anno: number) {
     const graph = await this.graphRepository.findOne({
-      where: { core, indicador, anno },
+      where: { core, anno },
     });
-    // Comprueba si el grafo fue encontrado
+
     if (!graph) {
       console.log('Grafo no encontrado');
       return undefined; // O maneja este caso como prefieras
     }
-    return graph.values;
+    if (indicador === 'agree') {
+      return graph.agreem;
+    } else if (indicador === 'participant') {
+      return graph.participant;
+    } else {
+      return graph.order;
+    }
   }
 
   //hacer despues

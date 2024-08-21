@@ -67,9 +67,7 @@ export class BalanceService {
       crecim: crecimValue,
     });
     const saveBal = await this.balanceRepository.save(balance);
-    await this.graphService.create(saveBal.idBal, 'participant');
-    await this.graphService.create(saveBal.idBal, 'order');
-    await this.graphService.create(saveBal.idBal, 'agree');
+    await this.graphService.create(saveBal.idBal);
   }
 
   async updateBalanceByActaROId(actaRoId: number): Promise<void> {

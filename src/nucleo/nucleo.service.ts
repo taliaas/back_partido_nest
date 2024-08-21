@@ -26,6 +26,9 @@ export class NucleoService {
     return await this.nucleoRepository.find();
   }
 
+  async findId() {
+    return '';
+  }
   async findOne(id: number) {
     return await this.nucleoRepository.findOne({
       where: { id },
