@@ -11,6 +11,7 @@ import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { GraphModule } from './graph/graph.module';
 import { NucleoModule } from './nucleo/nucleo.module';
+import { NotificationModule } from './notification/notification.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { NucleoModule } from './nucleo/nucleo.module';
     ActaRoModule,
     GraphModule,
     NucleoModule,
+    NotificationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -51,6 +51,7 @@ export class AuthService {
         secret: process.env.REFRESH_SECRET,
         expiresIn: '7d',
       });
+
       return {
         access_token: accessToken,
         refresh_token: refreshToken,

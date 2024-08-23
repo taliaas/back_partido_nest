@@ -21,16 +21,30 @@ export class GraphService {
     if (!balance) {
       throw new Error('Balance not found');
     }
-    const index = balance.month;
-
-    const graph = this.graphRepository.create({
-      anno: balance.year,
-      core: balance.core,
-      [`order[${index}]`]: balance.order, //comprobar que no hay nada en esa posicion o sobreescribir??
-      [`agree[${index}]`]: balance.agreements,
-      [`participant[${index}]`]: balance.participants,
+    const existingGraph = await this.graphRepository.findOne({
+      where: { core: balance.core, anno: balance.year },
     });
-    await this.graphRepository.save(graph);
+    let index = 1;
+    if (existingGraph) {
+      index = balance.month - 1;
+      existingGraph.order[index] = balance.order;
+      existingGraph.agreem[index] = balance.agreements;
+      existingGraph.participant[index] = balance.participants;
+      await this.graphRepository.save(existingGraph);
+    } else {
+      index = balance.month - 1;
+      const graph = this.graphRepository.create({
+        anno: balance.year,
+        core: balance.core,
+        order: [],
+        participant: [],
+        agreem: [],
+      });
+      graph.order[index] = balance.order;
+      graph.agreem[index] = balance.agreements;
+      graph.participant[index] = balance.participants;
+      await this.graphRepository.save(graph);
+    }
   }
 
   async findAll() {

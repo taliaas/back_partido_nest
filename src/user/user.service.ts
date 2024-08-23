@@ -67,6 +67,7 @@ export class UserService {
     if (!user) {
       throw new NotFoundException();
     }
+    //si pone nueva contraseña que se codifique
     Object.assign(user, updateUserDto);
     return await this.userRepository.save(user);
   }
