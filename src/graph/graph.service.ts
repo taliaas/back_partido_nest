@@ -76,6 +76,7 @@ export class GraphService {
   }
 
   //hacer despues
+  //si se elimina o se actualiza un acta hay q modificar
   async update(id: number, updateGraphDto: UpdateGraphDto) {
     const graph = await this.findOne(id);
     if (!graph) {
@@ -86,8 +87,8 @@ export class GraphService {
     await this.graphRepository.save(graph);
   }
 
-  //solo elimina cuando este valores null
-  remove(id: number) {
-    return `This action removes a #${id} graph`;
+  //solo elimina cuando todos los balances sean eliminados
+  async remove(id: number) {
+    await this.graphRepository.delete(id);
   }
 }
