@@ -48,7 +48,7 @@ export class ActaRoService {
     return actaROExists;
   }
 
-  async update(id: number, updateActaRoDto: UpdateActaRoDto): Promise<void> {
+  async update(id: number, updateActaRoDto: UpdateActaRoDto) {
     const acta = await this.findOne(id);
     if (!acta) {
       throw new NotFoundException();
@@ -59,6 +59,7 @@ export class ActaRoService {
 
     // Actualiza el balance correspondiente
     await this.balanceService.updateBalanceByActaROId(id);
+    return acta;
   }
 
   async updateCpToById(id: number): Promise<void> {

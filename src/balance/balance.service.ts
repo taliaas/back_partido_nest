@@ -98,9 +98,7 @@ export class BalanceService {
       where: { idRO: actaRoId },
     });
     balance.cp = actaCp ? 1 : 0;
-    balance.agreements_cp = actaCp
-      ? (actaCp.agreements.match(/desc/g) || []).length
-      : 0;
+    balance.agreements_cp = actaCp ? actaCp.agreements.length : 0;
 
     await this.balanceRepository.save(balance);
   }

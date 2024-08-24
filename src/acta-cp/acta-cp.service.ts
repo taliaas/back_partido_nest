@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ActaCP } from './entities/acta-cp.entity';
@@ -56,9 +56,17 @@ export class ActaCpService {
     });
   }
 
-  async update(id: number, updateActaCpDto: UpdateActaCpDto): Promise<void> {
-    await this.actaCPRepository.update(id, updateActaCpDto);
+  async update(id: number, updateActaCpDto: UpdateActaCpDto): Promise<ActaCP> {
+    const acta = await this.findOne(id);
+    if (!acta) {
+      throw new NotFoundException();
+    }
+
+    Object.assign(acta, updateActaCpDto);
+    await this.actaCPRepository.save(acta);
+    return acta;
   }
+
   async remove(id: number): Promise<void> {
     await this.actaCPRepository.delete(id);
   }
