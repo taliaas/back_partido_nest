@@ -87,9 +87,9 @@ export class BalanceService {
 
     // Actualiza los valores del balance basados en el acta actualizada
     balance.core = actaRo.nucleo;
-    balance.order = (actaRo.order.match(/desc/g) || []).length;
+    balance.order = actaRo.order.length;
     balance.participants = actaRo.present;
-    balance.agreements = (actaRo.agreements.match(/desc/g) || []).length;
+    balance.agreements = actaRo.agreements.length;
 
     const crecimValue = await this.findCreciment(actaRo.development);
     balance.crecim = crecimValue;
