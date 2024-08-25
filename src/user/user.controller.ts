@@ -33,6 +33,7 @@ export class UserController {
     return this.userService.findOne(+id);
   }
 
+  //buscar al usuario por el nombre
   @Get('/data/:name')
   find(@Param('name') name: string): Promise<User | undefined> {
     return this.userService.findOneByName(name);
@@ -42,22 +43,16 @@ export class UserController {
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(+id, updateUserDto);
   }
-  @Patch(':id/change-password')
-  async changePassword(
+  @Post(':id/change-password')
+  updatePassword(
     @Param('id') id: number,
-    @Body() updatePasswordDto: { oldPassword: string; newPassword: string },
-  ) {
-    try {
-      const result = await this.userService.updatePassword(
-        id,
-        updatePasswordDto.oldPassword,
-        updatePasswordDto.newPassword,
-      );
-      return result;
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
+    @Body() updateUserDto: UpdateUserDto,
+  ): Promise<void> {
+    return this.userService.updatePassword(
+      id,
+      updateUserDto.oldPassword,
+      updateUserDto.newPassword,
+    );
   }
 
   @Delete(':id')

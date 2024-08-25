@@ -25,8 +25,7 @@ export class UserService {
       throw new NotFoundException('El usuario ya existe.');
     }
 
-    // Suponiendo que createUserDto es un objeto que contiene la propiedad password
-    const saltRounds = 10; // Número de rondas para el hashing, aumentar para mayor seguridad pero menor rendimiento
+    const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(
       createUserDto.password,
       saltRounds,
@@ -62,12 +61,12 @@ export class UserService {
     });
   }
 
+  // pasar contrasenna y que se hashee
   async update(id: number, updateUserDto: UpdateUserDto) {
     const user = await this.findOne(id);
     if (!user) {
       throw new NotFoundException();
     }
-    //si pone nueva contraseña que se codifique
     Object.assign(user, updateUserDto);
     return await this.userRepository.save(user);
   }
@@ -91,6 +90,7 @@ export class UserService {
       );
 
       if (!isOldPasswordValid) {
+        console.log('error, contrasenna incorrecta');
         throw new Error('Contraseña antigua incorrecta');
       }
 
@@ -98,7 +98,7 @@ export class UserService {
       const hashedNewPassword = await bcrypt.hash(newPassword, 10);
 
       // Actualizar la contraseña del usuario
-      Object.assign(user, hashedNewPassword);
+      Object.assign(user, { password: hashedNewPassword });
       return await this.userRepository.save(user);
     } catch (error) {
       console.error(error);

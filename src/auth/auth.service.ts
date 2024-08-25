@@ -61,4 +61,46 @@ export class AuthService {
       throw new UnauthorizedException('Authentication failed');
     }
   }
+
+  //cuando se olvida la contrasenna y la recupera
+ /* async updatePassword(
+    userId: string,
+    oldPassword: string,
+    newPassword: string,
+  ): Promise<any> {
+    try {
+      // Obtener el usuario del sistema
+      const user = await this.userRepository.findOne({ where: { id: userId } });
+
+      if (!user) {
+        return { message: 'Usuario no encontrado' };
+      }
+
+      // Verificar la contraseña antigua
+      const isValidOldPassword = await bcrypt.compare(
+        oldPassword,
+        user.password,
+      );
+
+      if (!isValidOldPassword) {
+        return { message: 'Contraseña antigua incorrecta' };
+      }
+
+      // Encriptar la nueva contraseña
+      const hashedNewPassword = await bcrypt.hash(newPassword, 12);
+
+      // Actualizar la contraseña en la base de datos
+      user.password = hashedNewPassword;
+      await this.userRepository.save(user);
+
+      // Generar un nuevo token JWT
+      const payload = { sub: user.id };
+      const token = this.jwtService.sign(payload);
+
+      return { message: 'Contraseña actualizada correctamente', token };
+    } catch (error) {
+      console.error(error);
+      return { message: 'Ocurrió un error al actualizar la contraseña' };
+    }
+  }*/
 }

@@ -33,6 +33,10 @@ export class ActaRoController {
     return this.actaRoService.findOne(+id);
   }
 
+  @Get('nucleo')
+  async getNucleo(): Promise<number[]> {
+    return this.actaRoService.findNucleos();
+  }
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateActaRoDto: UpdateActaRoDto) {
     return this.actaRoService.update(+id, updateActaRoDto);

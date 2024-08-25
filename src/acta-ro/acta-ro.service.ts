@@ -48,6 +48,13 @@ export class ActaRoService {
     return actaROExists;
   }
 
+  //obtener todos los nucleos
+  async findNucleos() {
+    const actas = await this.actaRORepository.find();
+    console.log(actas);
+    return actas.map((acta) => acta.nucleo);
+  }
+
   async update(id: number, updateActaRoDto: UpdateActaRoDto) {
     const acta = await this.findOne(id);
     if (!acta) {
