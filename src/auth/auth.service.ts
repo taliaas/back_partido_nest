@@ -39,6 +39,7 @@ export class AuthService {
       }
       const validPassword = await this.verifyPassword(password, user.password);
       if (!validPassword) {
+        console.log(validPassword);
         throw new UnauthorizedException('The Password provided is incorrect');
       }
       const payload = {
@@ -63,7 +64,7 @@ export class AuthService {
   }
 
   //cuando se olvida la contrasenna y la recupera
- /* async updatePassword(
+  /* async updatePassword(
     userId: string,
     oldPassword: string,
     newPassword: string,

@@ -32,6 +32,6 @@ export class ActaRO {
   @Column({ type: 'varchar', array: true })
   agreements: string;
 
-  @Column({ type: 'int', default: 0 })
+  @Column({ type: 'integer', default: 0 })
   cp: number;
 }

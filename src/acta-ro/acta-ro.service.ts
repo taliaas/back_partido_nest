@@ -39,8 +39,8 @@ export class ActaRoService {
 
   //buscar acta ro que tenga cp = 0
   async findActas() {
-    const actaROExists = await this.actaRORepository.findOne({
-      where: { id: 1 },
+    const actaROExists = await this.actaRORepository.find({
+      select: ['id'],
     });
     if (actaROExists) {
       throw new Error('ActaRO no existe');
@@ -48,11 +48,12 @@ export class ActaRoService {
     return actaROExists;
   }
 
-  //obtener todos los nucleos
-  async findNucleos() {
-    const actas = await this.actaRORepository.find();
-    console.log(actas);
-    return actas.map((acta) => acta.nucleo);
+  async getActasWithCpZero(): Promise<number[]> {
+    const actas = await this.actaRORepository.find({
+      where: { cp: 0 }, // Filtra por cp igual a 0
+      select: ['id'], // Selecciona solo el campo 'id'
+    });
+    return actas.map((acta) => acta.id);
   }
 
   async update(id: number, updateActaRoDto: UpdateActaRoDto) {
@@ -84,5 +85,13 @@ export class ActaRoService {
     await this.balanceService.deleteBalanceByActaROId(id);
     // Eliminar el acta
     await this.actaRORepository.delete(id);
+  }
+
+  async getAllCore() {
+    const actas = await this.actaRORepository.find({
+      select: ['nucleo'],
+    });
+    console.log('actas');
+    return actas;
   }
 }
