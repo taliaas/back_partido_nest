@@ -37,6 +37,7 @@ export class AuthService {
       if (!user) {
         throw new UnauthorizedException('User not found');
       }
+
       const validPassword = await this.verifyPassword(password, user.password);
       if (!validPassword) {
         console.log(validPassword);

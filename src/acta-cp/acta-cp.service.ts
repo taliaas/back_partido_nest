@@ -7,6 +7,7 @@ import { validate } from 'class-validator';
 import { UpdateActaCpDto } from './dto/update-acta-cp.dto';
 import { ActaRO } from 'src/acta-ro/entities/acta-ro.entity';
 import { ActaRoService } from 'src/acta-ro/acta-ro.service';
+import { BalanceService } from 'src/balance/balance.service';
 
 @Injectable()
 export class ActaCpService {
@@ -16,6 +17,7 @@ export class ActaCpService {
     @InjectRepository(ActaRO)
     private actaRORepository: Repository<ActaRO>,
     private actaROService: ActaRoService,
+    private balanceService: BalanceService,
   ) {}
 
   async create(createActaCpDto: CreateActaCpDto): Promise<ActaCP | undefined> {
@@ -43,6 +45,7 @@ export class ActaCpService {
     const acta = this.actaCPRepository.create(createActaCpDto);
     const save = await this.actaCPRepository.save(acta);
     await this.actaROService.updateCpToById(createActaCpDto.idRO);
+    await this.balanceService.updateBalanceByActaROId(createActaCpDto.idRO);
     return save;
   }
 

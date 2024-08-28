@@ -82,18 +82,18 @@ export class UserService {
       if (!user) {
         throw new Error('Usuario no encontrado');
       }
-
+      console.log(user.name);
       // Comparar la contraseña antigua con la almacenada
       const isOldPasswordValid = await bcrypt.compare(
         oldPassword,
         user.password,
       );
-
+      console.log(user.password, oldPassword);
       if (!isOldPasswordValid) {
         console.log('error, contrasenna incorrecta');
         throw new Error('Contraseña antigua incorrecta');
       }
-
+      console.log(user.name);
       // Hash de la nueva contraseña
       const hashedNewPassword = await bcrypt.hash(newPassword, 10);
 
