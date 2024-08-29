@@ -25,6 +25,16 @@ export class ActaRoController {
     return this.actaRoService.findAll();
   }
 
+  @Get('core')
+  getAllCore() {
+    return this.actaRoService.getAllCore();
+  }
+
+  @Get('/cp-zero-ids')
+  async getActasWithCpZeroIds(): Promise<number[]> {
+    return this.actaRoService.getActasWithCpZero();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.actaRoService.findOne(+id);
@@ -38,15 +48,5 @@ export class ActaRoController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.actaRoService.remove(+id);
-  }
-
-  @Get('core')
-  getAllCore() {
-    return this.actaRoService.getAllCore();
-  }
-
-  @Get('/cp-zero-ids')
-  async getActasWithCpZeroIds(): Promise<number[]> {
-    return this.actaRoService.getActasWithCpZero();
   }
 }

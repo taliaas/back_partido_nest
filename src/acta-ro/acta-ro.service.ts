@@ -37,7 +37,50 @@ export class ActaRoService {
     });
   }
 
-  //buscar acta ro que tenga cp = 0
+  async update(id: number, updateActaRoDto: UpdateActaRoDto) {
+    const acta = await this.findOne(id);
+    if (!acta) {
+      throw new NotFoundException();
+    }
+
+    Object.assign(acta, updateActaRoDto);
+    await this.actaRORepository.save(acta);
+
+    // Actualiza el balance correspondiente
+    await this.balanceService.updateBalanceByActaROId(id);
+    return acta;
+  }
+
+  async remove(id: number): Promise<void> {
+    // Eliminar el balance asociado al acta
+    await this.balanceService.deleteBalanceByActaROId(id);
+    // Eliminar el acta
+    await this.actaRORepository.delete(id);
+  }
+
+  async getAllCore() {
+    const uniqueNucleos = new Set();
+    const allNucleos = await this.actaRORepository.find({
+      select: ['nucleo'],
+    });
+
+    for (const nucleo of allNucleos) {
+      uniqueNucleos.add(nucleo.nucleo);
+    }
+
+    return Array.from(uniqueNucleos);
+  }
+
+  async updateCpToById(id: number): Promise<void> {
+    const actaRO = await this.findOne(id);
+    if (!actaRO) {
+      throw new Error('ActaCP not found');
+    }
+    actaRO.cp = 1;
+
+    await this.actaRORepository.save(actaRO);
+  }
+
   async findActas() {
     const actaROExists = await this.actaRORepository.find({
       select: ['id'],
@@ -54,44 +97,5 @@ export class ActaRoService {
       select: ['id'], // Selecciona solo el campo 'id'
     });
     return actas.map((acta) => acta.id);
-  }
-
-  async update(id: number, updateActaRoDto: UpdateActaRoDto) {
-    const acta = await this.findOne(id);
-    if (!acta) {
-      throw new NotFoundException();
-    }
-
-    Object.assign(acta, updateActaRoDto);
-    await this.actaRORepository.save(acta);
-
-    // Actualiza el balance correspondiente
-    await this.balanceService.updateBalanceByActaROId(id);
-    return acta;
-  }
-
-  async updateCpToById(id: number): Promise<void> {
-    const actaRO = await this.findOne(id);
-    if (!actaRO) {
-      throw new Error('ActaCP not found');
-    }
-    actaRO.cp = 1;
-
-    await this.actaRORepository.save(actaRO);
-  }
-
-  async remove(id: number): Promise<void> {
-    // Eliminar el balance asociado al acta
-    await this.balanceService.deleteBalanceByActaROId(id);
-    // Eliminar el acta
-    await this.actaRORepository.delete(id);
-  }
-
-  async getAllCore() {
-    const actas = await this.actaRORepository.find({
-      select: ['nucleo'],
-    });
-    console.log('actas');
-    return actas;
   }
 }
