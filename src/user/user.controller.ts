@@ -59,8 +59,8 @@ export class UserController {
   updateAdminPassword(
     @Param('id') id: number,
     @Body() updateUserDto: UpdateUserDto,
-  ) {
-    this.userService.updateAdminPassword(id, updateUserDto.password);
+  ): Promise<User> {
+    return this.userService.updateAdminPassword(id, updateUserDto.password);
   }
   @Delete(':id')
   remove(@Param('id') id: string) {

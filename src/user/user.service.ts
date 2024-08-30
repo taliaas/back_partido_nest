@@ -71,16 +71,17 @@ export class UserService {
     return await this.userRepository.save(user);
   }
 
-  async updateAdminPassword(id: number, password: string) {
+  async updateAdminPassword(id: number, password: string): Promise<User> {
     const user = await this.findOne(id);
     if (!user) {
       throw new NotFoundException();
     }
     const hashedNewPassword = await bcrypt.hash(password, 10);
-
+    console.log(password);
     // Actualizar la contraseña del usuario
     Object.assign(user, { password: hashedNewPassword });
-    return await this.userRepository.save(user);
+    await this.userRepository.save(user);
+    return user;
   }
   async updatePassword(
     id: number,
