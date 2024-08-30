@@ -71,6 +71,17 @@ export class UserService {
     return await this.userRepository.save(user);
   }
 
+  async updateAdminPassword(id: number, password: string) {
+    const user = await this.findOne(id);
+    if (!user) {
+      throw new NotFoundException();
+    }
+    const hashedNewPassword = await bcrypt.hash(password, 10);
+
+    // Actualizar la contraseña del usuario
+    Object.assign(user, { password: hashedNewPassword });
+    return await this.userRepository.save(user);
+  }
   async updatePassword(
     id: number,
     oldPassword: string,
