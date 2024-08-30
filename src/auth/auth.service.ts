@@ -31,7 +31,7 @@ export class AuthService {
   async authentication(
     username: string,
     password: string,
-  ): Promise<{ access_token: string; refresh_token: string }> {
+  ): Promise<{ access_token: string }> {
     try {
       const user = await this.findOneByName(username);
       if (!user) {
@@ -49,14 +49,9 @@ export class AuthService {
       };
       // Use this.jwtService.sign for signing the tokens
       const accessToken = this.jwtService.sign(payload, { expiresIn: '1h' });
-      const refreshToken = this.jwtService.sign(payload, {
-        secret: process.env.REFRESH_SECRET,
-        expiresIn: '7d',
-      });
 
       return {
         access_token: accessToken,
-        refresh_token: refreshToken,
       };
     } catch (error) {
       console.error(error);
