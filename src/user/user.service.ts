@@ -13,6 +13,19 @@ export class UserService {
     private userRepository: Repository<User>,
   ) {}
 
+  async verifyPassword(
+    plainPassword: string,
+    hashedPassword: string,
+  ): Promise<boolean> {
+    if (
+      typeof plainPassword !== 'string' ||
+      typeof hashedPassword !== 'string'
+    ) {
+      throw new Error('The values entered must be strings');
+    }
+    return bcrypt.compareSync(plainPassword, hashedPassword);
+  }
+
   async create(createUserDto: CreateUserDto): Promise<User> {
     // Verifica si el usuario ya existe
     const existingUser = await this.userRepository.findOne({
@@ -42,8 +55,13 @@ export class UserService {
 
     return newUser;
   }
+
   async findOneByEmail(email: string) {
-    return this.userRepository.findOneBy({ email });
+    const user = this.userRepository.findOneBy({ email });
+    if (!user) {
+      throw new NotFoundException('User not found'); // Lanzamos una excepción
+    }
+    return user;
   }
 
   async findOneByName(name: string): Promise<User | undefined> {

@@ -15,36 +15,53 @@ export class GraphService {
   ) {}
 
   async create(balanceId: number) {
+    const balance = await this.getBalance(balanceId);
+    const existingGraph = await this.getExistingGraph(balance);
+
+    if (existingGraph) {
+      await this.updateExistingGraph(existingGraph, balance);
+    } else {
+      await this.createNewGraph(balance);
+    }
+  }
+
+  async getBalance(balanceId: number) {
     const balance = await this.balanceRepository.findOne({
       where: { idBal: balanceId },
     });
     if (!balance) {
       throw new Error('Balance not found');
     }
-    const existingGraph = await this.graphRepository.findOne({
+    return balance;
+  }
+
+  async getExistingGraph(balance: Balance) {
+    return await this.graphRepository.findOne({
       where: { core: balance.core, anno: balance.year },
     });
-    let index = 1;
-    if (existingGraph) {
-      index = balance.month - 1;
-      existingGraph.order[index] = balance.order;
-      existingGraph.agreem[index] = balance.agreements;
-      existingGraph.participant[index] = balance.participants;
-      await this.graphRepository.save(existingGraph);
-    } else {
-      index = balance.month - 1;
-      const graph = this.graphRepository.create({
-        anno: balance.year,
-        core: balance.core,
-        order: [],
-        participant: [],
-        agreem: [],
-      });
-      graph.order[index] = balance.order;
-      graph.agreem[index] = balance.agreements;
-      graph.participant[index] = balance.participants;
-      await this.graphRepository.save(graph);
-    }
+  }
+
+  async updateExistingGraph(existingGraph: Graph, balance: Balance) {
+    const index = balance.month - 1;
+    existingGraph.order[index] = balance.order;
+    existingGraph.agreem[index] = balance.agreements;
+    existingGraph.participant[index] = balance.participants;
+    await this.graphRepository.save(existingGraph);
+  }
+
+  async createNewGraph(balance: Balance) {
+    const index = balance.month - 1;
+    const graph = this.graphRepository.create({
+      anno: balance.year,
+      core: balance.core,
+      order: [],
+      participant: [],
+      agreem: [],
+    });
+    graph.order[index] = balance.order;
+    graph.agreem[index] = balance.agreements;
+    graph.participant[index] = balance.participants;
+    await this.graphRepository.save(graph);
   }
 
   async findAll() {

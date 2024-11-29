@@ -92,10 +92,11 @@ export class ActaRoService {
   }
 
   async getActasWithCpZero(): Promise<number[]> {
-    const actas = await this.actaRORepository.find({
-      where: { cp: 0 }, // Filtra por cp igual a 0
-      select: ['id'], // Selecciona solo el campo 'id'
-    });
-    return actas.map((acta) => acta.id);
+    return (
+      await this.actaRORepository.find({
+        where: { cp: 0 }, // Filtra por cp igual a 0
+        select: ['id'], // Selecciona solo el campo 'id'
+      })
+    ).map((acta) => acta.id);
   }
 }
